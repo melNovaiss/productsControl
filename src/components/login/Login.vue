@@ -26,13 +26,7 @@
       <i class="bi bi-x-circle"></i> Email e/ou senha inválidos.
       <i class="bi bi-x-circle"></i>
     </div>
-    <button
-      type="submit"
-      class="btn btn-success mt-4 rounded-pill px-4"
-      style="background-color: #8758a6"
-    >
-      Entrar
-    </button>
+    <button type="submit" class="btn btn-purple1 mt-4 rounded-pill px-4">Entrar</button>
   </form>
 </template>
 

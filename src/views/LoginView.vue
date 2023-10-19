@@ -1,7 +1,7 @@
 <template>
   <div class="container shadow my-5">
     <div class="row">
-      <div class="col-6 p-4 cardWelcome" style="background-color: #8758a6">
+      <div class="col-6 p-4 cardWelcome">
         <h2 class="text-white py-4">Bem vindo de volta!</h2>
         <div class="text-white">
           <span>Lorem ipsum dolor sit amet. Et adipisci voluptate</span><br />
@@ -35,17 +35,17 @@ export default {
 <style scoped>
 .cardWelcome {
   display: flex;
-  background-color: #8758a6;
+  background-color: #5F4A8C;
   flex-direction: column;
   justify-content: center;
 }
 
 a {
-  color: #8758a6;
+  color: #5F4A8C;
   text-decoration: none;
 }
 a:hover {
-  color: #442c54;
+  color: #5F4A8C;
   text-decoration: none;
 }
 

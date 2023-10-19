@@ -12,19 +12,19 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
 }
-
-nav {
-  padding: 30px;
+.btn-purple1 {
+  background-color: #5f4a8c;
+  color: white;
 }
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.btn-purple1:hover {
+  background-color: #795eb4;
+  color: white;
 }
-
-nav a.router-link-exact-active {
-  color: #42b983;
+a {
+  text-decoration: none;
 }
+/* input {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+} */
 </style>

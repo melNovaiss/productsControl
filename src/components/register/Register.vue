@@ -88,11 +88,7 @@
       </div>
     </div>
 
-    <button
-      type="submit"
-      class="btn text-white rounded-pill px-4 mb-3"
-      style="background-color: #8758a6"
-    >
+    <button type="submit" class="btn btn-purple1 rounded-pill px-4 mb-3">
       Salvar
     </button>
   </form>

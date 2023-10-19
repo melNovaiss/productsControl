@@ -5,13 +5,13 @@
 
 <script>
 import navbar from "../components/Navbar.vue";
-import productsPage from "../views/ProductsView.vue"
+import productPage from "../components/products/ProductsPage.vue";
 
 export default {
-  name: "HomeView",
+  name: "products",
   components: {
     navbar,
-    productsPage,
+    productPage,
   },
 };
 </script>
