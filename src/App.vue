@@ -8,7 +8,7 @@
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -23,6 +23,10 @@
 }
 a {
   text-decoration: none;
+}
+
+.card{
+  border: 0;
 }
 /* input {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
