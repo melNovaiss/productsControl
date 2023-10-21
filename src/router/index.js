@@ -47,7 +47,7 @@ router.beforeEach((to, from, next) => {
 
   if (to.meta.requiresAuth && !isAuthenticated) {
     next("/login");
-    alert("faça o login para acesar a página.")
+    alert("Faça o login para acesar a página.")
   } else {
     next();
   }
