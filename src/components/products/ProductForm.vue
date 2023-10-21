@@ -45,7 +45,6 @@
                   class="form-control"
                   id="oferta"
                   v-model="oferta"
-                  v-mask="'#.###,##'"
                   placeholder="0,00"
                   required="required"
                 />
@@ -65,7 +64,7 @@
 </template>
 
 <script>
-import {mask} from 'vue-the-mask'
+import { mask } from "vue-the-mask";
 import navbar from "../Navbar.vue";
 import $ from "jquery";
 
@@ -80,7 +79,7 @@ export default {
   components: {
     navbar,
   },
-  directives: {mask},
+  directives: { mask },
   methods: {
     async createProduct(e) {
       if ($("#name").val() === "" || $("#price").val() === "") {

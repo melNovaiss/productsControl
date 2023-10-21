@@ -11,6 +11,30 @@
     </div>
     <div class="card shadow">
       <div class="card-body">
+        <div class="d-flex justify-content-end">
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous" @click="previousPage">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li
+                class="page-item"
+                v-for="page in totalPages"
+                :key="page"
+                :class="{ active: page === currentPage }"
+              >
+                <a class="page-link" href="#" @click="changePage(page)">{{ page }}</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next" @click="nextPage">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
         <table class="table table-striped" v-if="products && products.length > 0">
           <thead>
             <tr>
@@ -22,7 +46,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="p in products" :key="p.id">
+            <tr v-for="p in filteredProducts" :key="p.id">
               <td>{{ p.id }}</td>
               <td>{{ p.name }}</td>
               <td>{{ p.price }}</td>
@@ -67,12 +91,24 @@ export default {
   name: "productPage",
   data() {
     return {
-      products: null,
+      products: [],
       product_id: null,
       price: null,
       oferta: null,
-      status: null,
+      status: "",
+      currentPage: 1,
+      itemsPerPage: 10,
     };
+  },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.products.length / this.itemsPerPage);
+    },
+    filteredProducts() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.products.slice(start, end);
+    },
   },
   methods: {
     async getProducts() {
@@ -100,6 +136,19 @@ export default {
       });
       await req.json();
       this.getProducts();
+    },
+    changePage(page) {
+      this.currentPage = page;
+    },
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
     },
   },
   mounted() {
