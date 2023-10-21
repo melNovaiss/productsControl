@@ -19,7 +19,9 @@
             <a class="nav-link active text-white" aria-current="page" href="/">Home</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link active text-white" aria-current="page" href="/products">Produtos</a>
+            <a class="nav-link active text-white" aria-current="page" href="/products"
+              >Produtos</a
+            >
           </li>
         </ul>
       </div>
@@ -30,7 +32,7 @@
           </a>
           <ul class="dropdown-menu">
             <li>
-              <a class="dropdown-item" href="/login"
+              <a class="dropdown-item" @click="removeUser" href="/login"
                 ><i class="bi bi-box-arrow-right"></i> Sign Out</a
               >
             </li>
@@ -44,12 +46,17 @@
 <script>
 export default {
   name: "sidebar",
+  methods: {
+    removeUser() {
+      localStorage.clear();
+    },
+  },
 };
 </script>
 
 <style scoped>
 .bg-body-purple {
-  background-color: #5F4A8C;
+  background-color: #5f4a8c;
 }
 
 .bi-person-circle {

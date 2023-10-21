@@ -4,38 +4,53 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/HomeView.vue"),
+    component: () => import("../views/HomeView.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/login",
     name: "login",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/LoginView.vue"),
+    component: () => import("../views/LoginView.vue"),
   },
   {
     path: "/register",
     name: "register",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/RegisterView.vue"),
+    component: () => import("../views/RegisterView.vue"),
   },
   {
     path: "/products",
     name: "products",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/ProductsView.vue"),
+    component: () => import("../views/ProductsView.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/products/form",
     name: "productForm",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../components/products/ProductForm.vue"),
+    component: () => import("../components/products/ProductForm.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem("userLoggedIn");
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next("/login");
+    alert("faça o login para acesar a página.")
+  } else {
+    next();
+  }
 });
 
 export default router;

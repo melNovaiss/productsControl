@@ -24,7 +24,6 @@
     </div>
     <div class="pt-4 text-danger d-none" id="errorLogin">
       <i class="bi bi-x-circle"></i> Email e/ou senha inválidos.
-      <i class="bi bi-x-circle"></i>
     </div>
     <button type="submit" class="btn btn-purple1 mt-4 rounded-pill px-4">Entrar</button>
   </form>
@@ -40,8 +39,6 @@ export default {
     return {
       email: "",
       password: "",
-      //   isMatch: false,
-      //   databaseData: ["a", "b", "c"],
       users: db.users,
     };
   },
@@ -64,6 +61,8 @@ export default {
       });
 
       if (encontrou) {
+        localStorage.setItem("userLoggedIn", "true");
+
         window.location.href = "/";
         console.log("Credenciais válidas.");
       } else {
@@ -72,8 +71,6 @@ export default {
           $("#errorLogin").toggleClass("d-none");
         }, 5000);
       }
-      //   console.log((this.isMatch = this.db.users.some((user) => user === e)));
-      //   this.isMatch = this.databaseData.includes(this.email);
     },
   },
 };

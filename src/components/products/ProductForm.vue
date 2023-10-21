@@ -32,7 +32,7 @@
                   class="form-control"
                   id="price"
                   v-model="price"
-                  placeholder="name"
+                  placeholder="0,00"
                   required="required"
                 />
                 <label for="name">R$ Preço</label>
@@ -45,9 +45,11 @@
                   class="form-control"
                   id="oferta"
                   v-model="oferta"
+                  v-mask="'#.###,##'"
+                  placeholder="0,00"
                   required="required"
                 />
-                <label for="name">R$ Oferta</label>
+                <label for="oferta">R$ Oferta</label>
               </div>
             </div>
           </div>
@@ -63,6 +65,7 @@
 </template>
 
 <script>
+import {mask} from 'vue-the-mask'
 import navbar from "../Navbar.vue";
 import $ from "jquery";
 
@@ -77,6 +80,7 @@ export default {
   components: {
     navbar,
   },
+  directives: {mask},
   methods: {
     async createProduct(e) {
       if ($("#name").val() === "" || $("#price").val() === "") {
@@ -86,12 +90,12 @@ export default {
         const data = {
           name: this.name,
           price: this.price,
-          ofeta: this.oferta,
+          oferta: this.oferta,
         };
 
         const dataJson = JSON.stringify(data);
 
-        await fetch("http://localhost:3000/product", {
+        await fetch("http://localhost:3000/products", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: dataJson,

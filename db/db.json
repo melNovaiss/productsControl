@@ -4,8 +4,24 @@
       "name": "mel",
       "email": "mel@gmail.com",
       "password": "1234",
+      "cel": "(85) 98932-5064",
+      "cep": "61801375",
+      "address": {
+        "cep": "61801-375",
+        "logradouro": "Rua João Ferreira Pinto",
+        "bairro": "Carnaubinha",
+        "localidade": "Pacatuba",
+        "num": "111"
+      },
       "id": 1
     }
   ],
-  "product": []
+  "products": [
+    {
+      "name": "ovo",
+      "price": "1",
+      "oferta": "0,50",
+      "id": 1
+    }
+  ]
 }

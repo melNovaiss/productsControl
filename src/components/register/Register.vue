@@ -34,6 +34,7 @@
             id="cel"
             name="cel"
             v-model="cel"
+            v-mask="'(##) #####-####'"
             placeholder="cel"
             required="required"
           />
@@ -58,62 +59,106 @@
     <div class="row">
       <div class="col-6">
         <div class="form-floating mb-3">
-          <input type="text" class="form-control shadow" id="cep" placeholder="cep" />
+          <input
+            type="text"
+            class="form-control shadow"
+            id="cep"
+            @input="searchAddress"
+            v-model="cep"
+            placeholder="cep"
+            required="required"
+          />
           <label for="cep">Cep</label>
         </div>
       </div>
       <div class="col-6">
         <div class="form-floating mb-3">
-          <input type="text" class="form-control shadow" id="num" placeholder="num" />
+          <input
+            type="text"
+            class="form-control shadow"
+            id="num"
+            v-model="address.num"
+            placeholder="num"
+            required="required"
+          />
           <label for="num">Nº</label>
         </div>
       </div>
     </div>
     <div class="form-floating mb-3">
-      <input type="text" class="form-control shadow" id="end" placeholder="end" />
+      <input
+        type="text"
+        class="form-control shadow"
+        id="end"
+        v-model="address.logradouro"
+        placeholder="end"
+        required="required"
+      />
       <label for="end">Endereço</label>
     </div>
     <div class="row">
       <div class="col-8">
         <div class="form-floating mb-3">
-          <input type="text" class="form-control shadow" id="brr" placeholder="brr" />
+          <input
+            type="text"
+            class="form-control shadow"
+            id="brr"
+            v-model="address.bairro"
+            placeholder="brr"
+            required="required"
+          />
           <label for="brr">Bairro</label>
         </div>
       </div>
       <div class="col-4">
         <div class="form-floating mb-3">
-          <input type="text" class="form-control shadow" id="uf" placeholder="uf" />
-          <label for="uf">UF</label>
+          <input
+            type="text"
+            class="form-control shadow"
+            id="localidade"
+            v-model="address.localidade"
+            placeholder="localidade"
+            required="required"
+          />
+          <label for="localidade">Cidade</label>
         </div>
       </div>
     </div>
 
-    <button type="submit" class="btn btn-purple1 rounded-pill px-4 mb-3">
-      Salvar
-    </button>
+    <button type="submit" class="btn btn-purple1 rounded-pill px-4 mb-3">Salvar</button>
   </form>
 </template>
 
 <script>
 import $ from "jquery";
+import { mask } from "vue-the-mask";
+import axios from "axios";
 
 export default {
   name: "registerForm",
   data() {
     return {
-      name: null,
-      email: null,
+      name: "",
+      email: "",
       password: null,
-      phoneNumber: "",
+      cel: "",
+      address: [
+        {
+          logradouro: "",
+          bairro: "",
+          localidade: "",
+          num: "",
+        },
+      ],
     };
   },
+  directives: { mask },
   methods: {
+    removeMask(value) {
+      return value.replace(/[\(\)\-\s]/g, "");
+    },
     async createUser(e) {
-      if (
-        $("#name").val() === "" ||
-        $("#email").val() === "" ||
-        $("#password").val() === ""
-      ) {
+      if (!this.validateForm()) {
         e.preventDefault();
         e.target.classList.add("was-validated");
       } else {
@@ -121,6 +166,8 @@ export default {
           name: this.name,
           email: this.email,
           password: this.password,
+          cel: this.removeMask(this.cel),
+          address: this.address,
         };
 
         const dataJson = JSON.stringify(data);
@@ -133,6 +180,39 @@ export default {
 
         window.location.href = "/login";
       }
+    },
+    async searchAddress() {
+      var cep = $("#cep").val();
+      if (cep && cep.length === 8) {
+        try {
+          const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+          const addressData = response.data;
+          this.address = {
+            cep: addressData.cep,
+            logradouro: addressData.logradouro,
+            bairro: addressData.bairro,
+            localidade: addressData.localidade,
+            localidade: addressData.localidade,
+          };
+          $("#num").focus();
+          console.log("Endereço encontrado:", this.address);
+        } catch (error) {
+          console.error("Erro ao buscar endereço:", error);
+        }
+      }
+    },
+    validateForm() {
+      return (
+        this.name &&
+        this.email &&
+        this.password &&
+        this.cel &&
+        this.cep &&
+        this.address.logradouro &&
+        this.address.bairro &&
+        this.address.localidade &&
+        this.address.num
+      );
     },
   },
 };
