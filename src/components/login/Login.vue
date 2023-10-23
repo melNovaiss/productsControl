@@ -67,6 +67,7 @@ export default {
         console.log("Credenciais válidas.");
       } else {
         $("#errorLogin").toggleClass("d-none");
+        $("#password").val("")
         setTimeout(function () {
           $("#errorLogin").toggleClass("d-none");
         }, 5000);
