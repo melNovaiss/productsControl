@@ -141,14 +141,10 @@ export default {
       this.currentPage = page;
     },
     previousPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-      }
+      this.currentPage = 1;
     },
     nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-      }
+      this.currentPage = this.totalPages;
     },
   },
   mounted() {
