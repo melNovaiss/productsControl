@@ -1,10 +1,9 @@
 <template>
-  <navbar />
   <productPage />
 </template>
 
 <script>
-import navbar from "../components/Navbar.vue";
+import navbar from "../components/Footer.vue";
 import productPage from "../components/products/ProductsPage.vue";
 
 export default {

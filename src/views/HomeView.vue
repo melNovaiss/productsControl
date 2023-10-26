@@ -1,12 +1,11 @@
 <template>
-  <navbar />
   <div class="container">
     <h1>Bem vindo</h1>
   </div>
 </template>
 
 <script>
-import navbar from "../components/Navbar.vue";
+import navbar from "../components/Footer.vue";
 
 export default {
   name: "HomeView",

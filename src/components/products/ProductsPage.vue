@@ -63,7 +63,7 @@
                   <button
                     type="button"
                     class="btn btn-sm btn-warning text-white"
-                    @click="updateProduct(p.id)"
+                    @click="updateProduct(p.id, p.status)"
                   >
                     <i class="bi bi-pencil-square"></i>
                   </button>
@@ -87,6 +87,7 @@
 </template>
 
 <script>
+import router from "@/router";
 export default {
   name: "productPage",
   data() {
@@ -116,9 +117,7 @@ export default {
       const data = await req.json();
       this.products = data;
     },
-    async updateProduct(event, id) {
-      const option = event.target.value;
-
+    async updateProduct(id, option) {
       const dataJson = JSON.stringify({ status: option });
 
       const req = await fetch(`http://localhost:3000/products/form/${id}`, {
@@ -129,6 +128,8 @@ export default {
 
       const res = await req.json();
       console.log(res);
+
+      router.push({ name: "updateProduct", params: { id } });
     },
     async deleteProduct(id) {
       const req = await fetch(`http://localhost:3000/products/${id}`, {

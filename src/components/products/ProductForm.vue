@@ -1,5 +1,4 @@
 <template>
-  <navbar />
   <div class="container my-5">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb pt-2">
@@ -65,7 +64,7 @@
 
 <script>
 import { mask } from "vue-the-mask";
-import navbar from "../Navbar.vue";
+import navbar from "../Footer.vue";
 import $ from "jquery";
 
 export default {

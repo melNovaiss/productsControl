@@ -35,6 +35,11 @@ const routes = [
       requiresAuth: true,
     },
   },
+  {
+    path: "/products/form/:id",
+    name: "updateProduct",
+    component: () => import("../components/products/ProductForm.vue"),
+  },
 ];
 
 const router = createRouter({
