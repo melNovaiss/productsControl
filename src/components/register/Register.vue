@@ -170,15 +170,19 @@ export default {
           address: this.address,
         };
 
-        const dataJson = JSON.stringify(data);
+        try {
+          const response = await axios.post("http://localhost:8080/register", data, {
+            headers: { "Content-Type": "application/json" },
+          });
 
-        await fetch("http://localhost:3000/users", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: dataJson,
-        });
-
-        window.location.href = "/login";
+          if (response.status === 201) {
+            window.location.href = "/login";
+          } else {
+            console.error("Erro ao criar o usuário:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Erro ao criar o usuário:", error);
+        }
       }
     },
     async searchAddress() {

@@ -31,6 +31,7 @@
 
 <script>
 import $ from "jquery";
+import axios from 'axios';
 import db from "../../../db/db.json";
 
 export default {
@@ -44,34 +45,35 @@ export default {
   },
   methods: {
     async login(e) {
-      if ($("#email").val() === "" || $("#password").val() === "") {
-        e.preventDefault();
+      e.preventDefault();
+      if (this.email === "" || this.password === "") {
         e.target.classList.add("was-validated");
-      } else {
-        this.compareData(this.email, this.password);
+        return;
+      }
+
+      try {
+        const response = await axios.post("http://localhost:8080/login", {
+          email: this.email,
+          password: this.password,
+        });
+
+        if (response.status === 200) {
+          localStorage.setItem("userLoggedIn", "true");
+          window.location.href = "/";
+        } else {
+          this.showLoginError();
+        }
+      } catch (error) {
+        console.log(error);
+        this.showLoginError();
       }
     },
-    compareData(email, password) {
-      let encontrou = false;
-
-      this.users.forEach((user) => {
-        if (user.email === email && user.password === password) {
-          encontrou = true;
-        }
-      });
-
-      if (encontrou) {
-        localStorage.setItem("userLoggedIn", "true");
-
-        window.location.href = "/";
-        console.log("Credenciais válidas.");
-      } else {
-        $("#errorLogin").toggleClass("d-none");
-        $("#password").val("")
-        setTimeout(function () {
-          $("#errorLogin").toggleClass("d-none");
-        }, 5000);
-      }
+    showLoginError() {
+      $("#errorLogin").removeClass("d-none");
+      $("#password").val("");
+      setTimeout(function () {
+        $("#errorLogin").addClass("d-none");
+      }, 5000);
     },
   },
 };
