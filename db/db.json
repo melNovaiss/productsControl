@@ -53,34 +53,34 @@
       "oferta": 14.99
     },
     {
+      "id": 6,
+      "name": "Produto 6",
+      "price": 17.99,
+      "oferta": 14.99
+    },
+    {
+      "id": 6,
+      "name": "Produto 6",
+      "price": 17.99,
+      "oferta": 14.99
+    },
+    {
+      "id": 6,
+      "name": "Produto 6",
+      "price": 17.99,
+      "oferta": 14.99
+    },
+    {
+      "id": 6,
+      "name": "Produto 6",
+      "price": 17.99,
+      "oferta": 14.99
+    },
+    {
       "id": 7,
       "name": "Produto 7",
       "price": 44.99,
       "oferta": 39.99
-    },
-    {
-      "id": 8,
-      "name": "Produto 8",
-      "price": 29.99,
-      "oferta": 25.99
-    },
-    {
-      "id": 9,
-      "name": "Produto 9",
-      "price": 19.99,
-      "oferta": 15.99
-    },
-    {
-      "id": 10,
-      "name": "Produto 10",
-      "price": 34.99,
-      "oferta": 29.99
-    },
-    {
-      "id": 11,
-      "name": "Produto 11",
-      "price": 22.99,
-      "oferta": 19.99
     }
   ]
 }
