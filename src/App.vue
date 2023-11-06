@@ -1,5 +1,7 @@
 <template>
-  <nav class="navbar navbar-expand-lg bg-body-purple shadow">
+  <nav
+    v-if="$route.name !== 'login' && $route.name !== 'register'"
+    class="navbar navbar-expand-lg bg-body-purple shadow">
     <div class="container">
       <a class="navbar-brand text-white" href="/">Product Control</a>
       <button
