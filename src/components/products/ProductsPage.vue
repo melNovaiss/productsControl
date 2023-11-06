@@ -67,9 +67,6 @@
                   >
                     <i class="bi bi-pencil-square"></i>
                   </button>
-                  <button type="button" class="btn btn-sm btn-info text-white">
-                    <i class="bi bi-box-seam"></i>
-                  </button>
                 </div>
               </td>
             </tr>
@@ -113,30 +110,40 @@ export default {
   },
   methods: {
     async getProducts() {
-      const req = await fetch("http://localhost:3000/products");
+      const req = await fetch("http://localhost:8080/products");
       const data = await req.json();
       this.products = data;
     },
     async updateProduct(id, option) {
-      const dataJson = JSON.stringify({ status: option });
+      try {
+        const data = { status: option }; // Objeto contendo os campos a serem atualizados
 
-      const req = await fetch(`http://localhost:3000/products/form/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: dataJson,
-      });
+        const req = await fetch(`http://localhost:8080/products/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
 
-      const res = await req.json();
-      console.log(res);
-
-      router.push({ name: "updateProduct", params: { id } });
+        if (req.ok) {
+          const res = await req.json();
+          console.log(res);
+          router.push({ name: "updateProduct", params: { id } });
+        } else {
+          console.error("Erro ao atualizar o produto. Status:", req.status);
+        }
+      } catch (error) {
+        console.error("Erro na requisição:", error);
+      }
     },
     async deleteProduct(id) {
-      const req = await fetch(`http://localhost:3000/products/${id}`, {
-        method: "DELETE",
-      });
-      await req.json();
-      this.getProducts();
+      try {
+        await fetch(`http://localhost:8080/products/${id}`, {
+          method: "DELETE",
+        });
+        this.getProducts();
+      } catch (error) {
+        console.error("Erro ao excluir o produto:", error);
+      }
     },
     changePage(page) {
       this.currentPage = page;

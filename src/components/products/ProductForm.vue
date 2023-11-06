@@ -9,7 +9,7 @@
     </nav>
     <div class="card shadow">
       <div class="card-body">
-        <form class="form" method="POST" @submit.prevent="createProduct" novalidate>
+        <form class="form" method="POST" @submit.prevent="saveProduct" novalidate>
           <div class="row">
             <div class="col-7">
               <div class="form-floating mb-3">
@@ -70,17 +70,35 @@ import $ from "jquery";
 export default {
   data() {
     return {
-      name: null,
-      price: null,
-      oferta: null,
+      name: "",
+      price: "",
+      oferta: "",
+      productId: null,
     };
   },
   components: {
     navbar,
   },
+  mounted() {
+    const productId = this.$route.params.id;
+    this.productId = productId;
+
+    if (productId) {
+      fetch(`http://localhost:8080/products/${productId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          this.name = data.name;
+          this.price = data.price;
+          this.oferta = data.oferta;
+        })
+        .catch((error) => {
+          console.error("Erro ao obter detalhes do produto:", error);
+        });
+    }
+  },
   directives: { mask },
   methods: {
-    async createProduct(e) {
+    async saveProduct(e) {
       if ($("#name").val() === "" || $("#price").val() === "") {
         e.preventDefault();
         e.target.classList.add("was-validated");
@@ -93,11 +111,19 @@ export default {
 
         const dataJson = JSON.stringify(data);
 
-        await fetch("http://localhost:3000/products", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: dataJson,
-        });
+        if (this.productId) {
+          await fetch(`http://localhost:8080/products/${this.productId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: dataJson,
+          });
+        } else {
+          await fetch("http://localhost:8080/products/form", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: dataJson,
+          });
+        }
 
         window.location.href = "/products";
       }
