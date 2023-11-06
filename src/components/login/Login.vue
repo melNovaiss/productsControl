@@ -73,7 +73,7 @@ export default {
       $("#password").val("");
       setTimeout(function () {
         $("#errorLogin").addClass("d-none");
-      }, 5000);
+      }, 2000);
     },
   },
 };
