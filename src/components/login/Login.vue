@@ -32,7 +32,7 @@
 <script>
 import $ from "jquery";
 import axios from 'axios';
-import db from "../../../db/db.json";
+// import db from "../../../db/db.json";
 
 export default {
   name: "loginForm",
