@@ -9,7 +9,13 @@
     </nav>
     <div class="card shadow">
       <div class="card-body">
-        <form class="form" method="POST" @submit.prevent="saveProduct" novalidate>
+        <form
+          class="form"
+          method="POST"
+          @submit.prevent="saveProduct"
+          :class="{ 'was-validated': formSubmitted && (name === '' || price === '') }"
+          novalidate
+        >
           <div class="row">
             <div class="col-7">
               <div class="form-floating mb-3">
@@ -64,8 +70,8 @@
 
 <script>
 import { mask } from "vue-the-mask";
+import axios from "axios";
 import navbar from "../Footer.vue";
-import $ from "jquery";
 
 export default {
   data() {
@@ -73,6 +79,7 @@ export default {
       name: "",
       price: "",
       oferta: "",
+      formSubmitted: false,
       productId: null,
     };
   },
@@ -80,13 +87,13 @@ export default {
     navbar,
   },
   mounted() {
-    const productId = this.$route.params.id;
-    this.productId = productId;
+    this.productId = this.$route.params.id;
 
-    if (productId) {
-      fetch(`http://localhost:8080/products/${productId}`)
-        .then((response) => response.json())
-        .then((data) => {
+    if (this.productId) {
+      axios
+        .get(`http://localhost:8080/products/${this.productId}`)
+        .then((response) => {
+          const data = response.data;
           this.name = data.name;
           this.price = data.price;
           this.oferta = data.oferta;
@@ -98,34 +105,35 @@ export default {
   },
   directives: { mask },
   methods: {
-    async saveProduct(e) {
-      if ($("#name").val() === "" || $("#price").val() === "") {
-        e.preventDefault();
-        e.target.classList.add("was-validated");
-      } else {
-        const data = {
-          name: this.name,
-          price: this.price,
-          oferta: this.oferta,
-        };
+    async saveProduct() {
+      this.formSubmitted = true;
 
+      if (this.email === "" || this.password === "") {
+        return;
+      }
+
+      const data = {
+        name: this.name,
+        price: this.price,
+        oferta: this.oferta,
+      };
+
+      try {
         const dataJson = JSON.stringify(data);
 
         if (this.productId) {
-          await fetch(`http://localhost:8080/products/${this.productId}`, {
-            method: "PUT",
+          await axios.put(`http://localhost:8080/products/${this.productId}`, dataJson, {
             headers: { "Content-Type": "application/json" },
-            body: dataJson,
           });
         } else {
-          await fetch("http://localhost:8080/products/form", {
-            method: "POST",
+          await axios.post("http://localhost:8080/products/form", dataJson, {
             headers: { "Content-Type": "application/json" },
-            body: dataJson,
           });
         }
 
-        window.location.href = "/products";
+        this.$router.push("/products");
+      } catch (error) {
+        console.error("Erro ao salvar produto:", error);
       }
     },
   },

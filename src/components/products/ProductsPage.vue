@@ -84,16 +84,12 @@
 </template>
 
 <script>
-import router from "@/router";
+import axios from "axios";
 export default {
   name: "productPage",
   data() {
     return {
       products: [],
-      product_id: null,
-      price: null,
-      oferta: null,
-      status: "",
       currentPage: 1,
       itemsPerPage: 10,
     };
@@ -110,26 +106,23 @@ export default {
   },
   methods: {
     async getProducts() {
-      const req = await fetch("http://localhost:8080/products");
-      const data = await req.json();
-      this.products = data;
+      try {
+        const response = await axios.get("http://localhost:8080/products");
+        this.products = response.data;
+      } catch (error) {
+        console.error("Erro ao obter os produtos:", error);
+      }
     },
     async updateProduct(id, option) {
       try {
-        const data = { status: option }; // Objeto contendo os campos a serem atualizados
-
-        const req = await fetch(`http://localhost:8080/products/${id}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
+        const response = await axios.patch(`http://localhost:8080/products/${id}`, {
+          status: option,
         });
-
-        if (req.ok) {
-          const res = await req.json();
-          console.log(res);
-          router.push({ name: "updateProduct", params: { id } });
+        if (response.status === 200) {
+          console.log(response.data);
+          this.$router.push({ name: "updateProduct", params: { id } });
         } else {
-          console.error("Erro ao atualizar o produto. Status:", req.status);
+          console.error("Erro ao atualizar o produto. Status:", response.status);
         }
       } catch (error) {
         console.error("Erro na requisição:", error);
@@ -137,9 +130,7 @@ export default {
     },
     async deleteProduct(id) {
       try {
-        await fetch(`http://localhost:8080/products/${id}`, {
-          method: "DELETE",
-        });
+        await axios.delete(`http://localhost:8080/products/${id}`);
         this.getProducts();
       } catch (error) {
         console.error("Erro ao excluir o produto:", error);
@@ -160,6 +151,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+a {
+  color: #5f4a8c;
+}
+</style>
 
 <style scoped>
 a {
