@@ -1,5 +1,11 @@
 <template>
-  <form class="form" method="POST" @submit.prevent="createUser" novalidate>
+  <form
+    class="form"
+    method="POST"
+    @submit.prevent="createUser"
+    :class="{ 'was-validated': formValidated }"
+    novalidate
+  >
     <div class="form-floating mb-3">
       <input
         type="text"
@@ -150,6 +156,7 @@ export default {
           num: "",
         },
       ],
+      formValidated: false,
     };
   },
   directives: { mask },
@@ -157,26 +164,25 @@ export default {
     removeMask(value) {
       return value.replace(/[\(\)\-\s]/g, "");
     },
-    async createUser(e) {
-      if (!this.validateForm()) {
-        e.preventDefault();
-        e.target.classList.add("was-validated");
-      } else {
-        const data = {
-          name: this.name,
-          email: this.email,
-          password: this.password,
-          cel: this.removeMask(this.cel),
-          address: this.address,
-        };
+    async createUser() {
+      this.formValidated = true;
 
+      if (this.validateForm()) {
         try {
+          const data = {
+            name: this.name,
+            email: this.email,
+            password: this.password,
+            cel: this.removeMask(this.cel),
+            address: this.address,
+          };
+
           const response = await axios.post("http://localhost:8080/register", data, {
             headers: { "Content-Type": "application/json" },
           });
 
           if (response.status === 201) {
-            window.location.href = "/login";
+            this.$router.push("/login");
           } else {
             console.error("Erro ao criar o usuário:", response.statusText);
           }
@@ -186,19 +192,18 @@ export default {
       }
     },
     async searchAddress() {
-      var cep = $("#cep").val();
-      if (cep && cep.length === 8) {
+      if (this.cep && this.cep.length === 8) {
         try {
-          const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+          const response = await axios.get(`https://viacep.com.br/ws/${this.cep}/json/`);
           const addressData = response.data;
           this.address = {
             cep: addressData.cep,
-            logradouro: addressData.logradouro,
-            bairro: addressData.bairro,
-            localidade: addressData.localidade,
-            localidade: addressData.localidade,
+            logradouro: addressData.logradouro || "",
+            bairro: addressData.bairro || "",
+            localidade: addressData.localidade || "",
+            num: "",
           };
-          $("#num").focus();
+          this.$refs.numInput.focus();
           console.log("Endereço encontrado:", this.address);
         } catch (error) {
           console.error("Erro ao buscar endereço:", error);
