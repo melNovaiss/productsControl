@@ -158,10 +158,10 @@ export default {
 a {
   color: #5f4a8c;
 }
-</style>
-
-<style scoped>
-a {
-  color: #5f4a8c;
+.page-link.active,
+.active > .page-link {
+  color: white;
+  background-color: #795eb4;
+  border-color: white;
 }
 </style>

@@ -66,7 +66,7 @@ export default {
 .dropdown-item:hover {
   color: #5f4a8c !important;
 }
-.dropdown-item: {
+.dropdown-item:focus{
   color: #5f4a8c !important;
 }
 .bg-body-purple {
