@@ -86,6 +86,7 @@
             v-model="address.num"
             placeholder="num"
             required="required"
+            ref="numInput"
           />
           <label for="num">Nº</label>
         </div>
