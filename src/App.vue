@@ -1,9 +1,10 @@
 <template>
   <nav
     v-if="$route.name !== 'login' && $route.name !== 'register'"
-    class="navbar navbar-expand-lg bg-body-purple shadow">
+    class="navbar navbar-expand-lg bg-body-purple shadow"
+  >
     <div class="container">
-      <a class="navbar-brand text-white" href="/">Product Control</a>
+      <a class="navbar-brand text-white" href="/">Products Control</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -18,7 +19,11 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link text-white" aria-current="page" href="/products"
+            <a
+              class="nav-link text-white"
+              id="prodPage"
+              aria-current="page"
+              href="/products"
               >Produtos</a
             >
           </li>
@@ -55,14 +60,21 @@ export default {
 </script>
 
 <style>
+.nav-link:hover {
+  color: #d9d7d7d2 !important;
+}
+.dropdown-item:hover {
+  color: #5f4a8c !important;
+}
+.dropdown-item: {
+  color: #5f4a8c !important;
+}
 .bg-body-purple {
   background-color: #5f4a8c;
 }
-
 .bi-person-circle {
   font-size: 1.5em;
 }
-
 #app {
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
