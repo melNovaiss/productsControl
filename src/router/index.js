@@ -36,9 +36,12 @@ const routes = [
     },
   },
   {
-    path: "/products/form/:id",
+    path: "/update-product/:id",
     name: "updateProduct",
-    component: () => import("../components/products/ProductForm.vue"),
+    component: () => import("../components/products/UpdateProduct.vue"),
+    meta: {
+      productData: null,
+    },
   },
 ];
 
@@ -52,7 +55,7 @@ router.beforeEach((to, from, next) => {
 
   if (to.meta.requiresAuth && !isAuthenticated) {
     next("/login");
-    alert("Faça o login para acessar a página.")
+    alert("Faça o login para acessar a página.");
   } else {
     next();
   }

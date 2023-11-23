@@ -1,31 +1,17 @@
 <template>
   <div class="container my-5">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb pt-2">
-        <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item"><a href="/products">Products</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Form</li>
-      </ol>
-    </nav>
     <div class="card shadow">
       <div class="card-body">
-        <form
-          class="form"
-          method="POST"
-          @submit.prevent="saveProduct"
-          :class="{ 'was-validated': formSubmitted && (name === '' || price === '') }"
-          novalidate
-        >
+        <form class="form" method="POST" novalidate>
           <div class="row">
             <div class="col-7">
               <div class="form-floating mb-3">
                 <input
+                  v-model="productData.name"
                   type="text"
                   class="form-control"
                   id="name"
-                  v-model="name"
                   placeholder="name"
-                  required="required"
                 />
                 <label for="name">Nome</label>
               </div>
@@ -33,12 +19,11 @@
             <div class="col-2 offset-1">
               <div class="form-floating mb-3">
                 <input
+                  v-model="productData.price"
                   type="text"
                   class="form-control"
                   id="price"
-                  v-model="price"
                   placeholder="0,00"
-                  required="required"
                 />
                 <label for="name">R$ Preço</label>
               </div>
@@ -46,19 +31,18 @@
             <div class="col-2">
               <div class="form-floating mb-3">
                 <input
+                  v-model="productData.oferta"
                   type="text"
                   class="form-control"
                   id="oferta"
-                  v-model="oferta"
                   placeholder="0,00"
-                  required="required"
                 />
                 <label for="oferta">R$ Oferta</label>
               </div>
             </div>
           </div>
           <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-purple1 rounded-pill px-4">
+            <button @click="saveProduct" type="button" class="btn btn-purple1 rounded-pill px-4">
               Salvar
             </button>
           </div>
@@ -69,41 +53,58 @@
 </template>
 
 <script>
-import { mask } from "vue-the-mask";
 import axios from "axios";
-import navbar from "../Footer.vue";
 
 export default {
   data() {
     return {
-      name: "",
-      price: "",
-      oferta: "",
-      formSubmitted: false,
+      productData: {
+        name: "",
+        price: "",
+        oferta: "",
+      },
     };
   },
-  components: {
-    navbar,
+
+  beforeRouteEnter(to, from, next) {
+    const id = parseInt(to.params.id, 10);
+    axios
+      .get(`http://localhost:8080/products/form/${id}`)
+      .then((response) => {
+        next((vm) => {
+          vm.productData = response.data;
+        });
+      })
+      .catch((error) => {
+        console.error("Erro na requisição:", error);
+        next();
+      });
   },
-  directives: { mask },
+
   methods: {
     async saveProduct() {
-      this.formSubmitted = true;
+      if (!this.productData.name || !this.productData.price || !this.productData.oferta) {
+        alert("Preencha todos os campos antes de salvar.");
+        return;
+      }
 
-      if (this.email === "" || this.password === "") {
+      const id = parseInt(this.$route.params.id, 10);
+
+      if (isNaN(id)) {
+        console.error("ID inválido.");
         return;
       }
 
       const data = {
-        name: this.name,
-        price: this.price,
-        oferta: this.oferta,
+        name: this.productData.name,
+        price: this.productData.price,
+        oferta: this.productData.oferta,
       };
 
-      try {
-        const dataJson = JSON.stringify(data);
+      console.log(data);
 
-        await axios.post("http://localhost:8080/products/form", dataJson, {
+      try {
+        await axios.put(`http://localhost:8080/products/form/${id}`, data, {
           headers: { "Content-Type": "application/json" },
         });
 
@@ -115,13 +116,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-a {
-  color: #5f4a8c;
-}
-
-input {
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-}
-</style>

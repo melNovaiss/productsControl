@@ -115,19 +115,21 @@ export default {
     },
     async updateProduct(id, option) {
       try {
-        const response = await axios.patch(`http://localhost:8080/products/${id}`, {
-          status: option,
+        const productResponse = await axios.get(
+          `http://localhost:8080/products/form/${id}`
+        );
+        const productData = productResponse.data;
+
+        this.$router.push({
+          name: "updateProduct",
+          params: { id },
+          meta: { productData },
         });
-        if (response.status === 200) {
-          console.log(response.data);
-          this.$router.push({ name: "updateProduct", params: { id } });
-        } else {
-          console.error("Erro ao atualizar o produto. Status:", response.status);
-        }
       } catch (error) {
         console.error("Erro na requisição:", error);
       }
     },
+
     async deleteProduct(id) {
       try {
         await axios.delete(`http://localhost:8080/products/${id}`);
